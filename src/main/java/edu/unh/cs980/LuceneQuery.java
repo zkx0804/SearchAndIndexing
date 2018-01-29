@@ -4,6 +4,7 @@ public class LuceneQuery {
 
 	static final private String INDEX_DIRECTORY = "index";
 	static final private String OUTPUT_DIR = "output";
+	static IndexData indexer = new IndexData();
 
 	public static void main(String[] args) {
 		System.setProperty("file.encoding", "UTF-8");
@@ -19,6 +20,12 @@ public class LuceneQuery {
 		// Local testing
 		String queryPath = "DataSet/";
 		String dataPath = "DataSet/paragraphCorpus/dedup.articles-paragraphs.cbor";
+		try {
+			indexer.indeAllData(INDEX_DIRECTORY, dataPath);
+		} catch (Throwable e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
 
 	}
 
