@@ -20,7 +20,33 @@ import edu.unh.cs.treccar_v2.read_data.DeserializeData;
 
 public class IndexData {
 
-	public void indeAllData(String INDEX_DIRECTORY, String file_path) throws CborException, IOException {
+	static final private String INDEX_DIRECTORY = "index";
+	static final private String OUTPUT_DIR = "output";
+
+	public static void main(String[] args) {
+		System.setProperty("file.encoding", "UTF-8");
+
+		// 1. index dataset
+		// 2. Create Lucene search engine
+		// 3. Get all queries and retrieve search result
+		// 4. Create run file.
+
+		// String queryPath = args[0];
+		// String dataPath = args[1];
+
+		// Local testing
+		String queryPath = "DataSet/";
+		String dataPath = "DataSet/paragraphCorpus/dedup.articles-paragraphs.cbor";
+		try {
+			indexAllData(INDEX_DIRECTORY, dataPath);
+		} catch (Throwable e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+
+	}
+
+	public static void indexAllData(String INDEX_DIRECTORY, String file_path) throws CborException, IOException {
 		Directory indexdir = FSDirectory.open((new File(INDEX_DIRECTORY)).toPath());
 		IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 		conf.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
@@ -43,11 +69,11 @@ public class IndexData {
 		iw.close();
 	}
 
-	private Document convertToLuceneDoc(Data.Paragraph para) {
+	private static Document convertToLuceneDoc(Data.Paragraph para) {
 		Document doc = new Document();
 
-		doc.add(new StringField("pageid", para.getParaId(), Field.Store.YES));
-		doc.add(new TextField("text", para.getTextOnly(), Field.Store.NO));
+		doc.add(new StringField("paraid", para.getParaId(), Field.Store.YES));
+		doc.add(new TextField("content", para.getTextOnly(), Field.Store.NO));
 
 		return doc;
 	}
