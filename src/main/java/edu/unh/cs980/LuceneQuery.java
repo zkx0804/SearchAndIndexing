@@ -33,11 +33,11 @@ public class LuceneQuery {
 		// 3. Get all queries and retrieve search result
 		// 4. Create run file.
 
-		// String queryPath = args[0];
+		String queryPath = args[0];
 		// String dataPath = args[1];
 
 		// Local testing args
-		String queryPath = "DataSet/benchmarkY1-train/";
+		// String queryPath = "DataSet/benchmarkY1-train/";
 		String dataPath = "DataSet/paragraphCorpus/dedup.articles-paragraphs.cbor";
 		try {
 
