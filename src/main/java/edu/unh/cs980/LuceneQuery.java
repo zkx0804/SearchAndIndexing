@@ -37,7 +37,7 @@ public class LuceneQuery {
 		// String dataPath = args[1];
 
 		// Local testing args
-		// String queryPath = "DataSet/benchmarkY1-train/";
+		// String queryPath = "DataSet/benchmarkY1-train/train.pages.cbor";
 		String dataPath = "DataSet/paragraphCorpus/dedup.articles-paragraphs.cbor";
 		try {
 
@@ -91,6 +91,7 @@ public class LuceneQuery {
 
 		for (String queryStr : queriesStr) {
 			Query q = parser.parse(QueryParser.escape(queryStr));
+			// Query q = parser.parse(queryStr);
 
 			TopDocs tops = searcher.search(q, max_result);
 			ScoreDoc[] scoreDoc = tops.scoreDocs;
