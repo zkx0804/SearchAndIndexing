@@ -12,10 +12,14 @@ import edu.unh.cs.treccar_v2.read_data.DeserializeData;
 public class QueryData {
 	ArrayList<String> pageQueryList;
 	ArrayList<String> sectionQueryList;
+	static final private int num_of_query_files = 5;
+	static final private String Page_Name = "train.pages.cbor";
 
 	public QueryData(String queryFilePath) {
 		if (pageQueryList == null || sectionQueryList == null) {
 			try {
+				pageQueryList = new ArrayList<String>();
+				sectionQueryList = new ArrayList<String>();
 				cacheAllQueryData(queryFilePath);
 			} catch (FileNotFoundException e) {
 				System.out.println("Unable to find query data.");
@@ -33,22 +37,25 @@ public class QueryData {
 	}
 
 	private void cacheAllQueryData(String file_path) throws FileNotFoundException {
-		FileInputStream fis = new FileInputStream((new File(file_path)));
+		for (int i = 0; i < num_of_query_files; i++) {
+			String path = file_path + "fold-" + i + "-" + Page_Name;
+			System.out.println("Retrieve queries from " + path);
+			FileInputStream fis = new FileInputStream((new File(path)));
 
-		for (Data.Page page : DeserializeData.iterableAnnotations(fis)) {
-			pageQueryList.add(page.getPageName());
+			for (Data.Page page : DeserializeData.iterableAnnotations(fis)) {
+				pageQueryList.add(page.getPageName());
 
-			for (List<Data.Section> sectionPath : page.flatSectionPaths()) {
-				String queryStr = page.getPageName();
-				for (Data.Section section : sectionPath) {
-					queryStr += " ";
-					queryStr += section.getHeading();
+				for (List<Data.Section> sectionPath : page.flatSectionPaths()) {
+					String queryStr = page.getPageName();
+					for (Data.Section section : sectionPath) {
+						queryStr += " ";
+						queryStr += section.getHeading();
+					}
+					sectionQueryList.add(queryStr);
 				}
-				sectionQueryList.add(queryStr);
+
 			}
-
 		}
-
 	}
 
 }

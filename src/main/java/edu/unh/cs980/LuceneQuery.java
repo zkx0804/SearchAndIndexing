@@ -21,11 +21,7 @@ public class LuceneQuery {
 
 	static final private String INDEX_DIRECTORY = "index";
 	static final private String OUTPUT_DIR = "output";
-	static final private int num_of_query_files = 5;
-	static final private String Article_Name = "train.pages.cbor-article.qrels";
-	static final private String Section_Name = "train.pages.cbor-hierarchical.qrels";
 	static final private int Max_Results = 100;
-	private static final int Max_Result = 0;
 
 	static IndexData indexer = new IndexData();
 
@@ -41,7 +37,7 @@ public class LuceneQuery {
 		// String dataPath = args[1];
 
 		// Local testing args
-		String queryPath = "DataSet/benchmarkY1-train";
+		String queryPath = "DataSet/benchmarkY1-train/";
 		String dataPath = "DataSet/paragraphCorpus/dedup.articles-paragraphs.cbor";
 		try {
 
@@ -52,12 +48,13 @@ public class LuceneQuery {
 			QueryData queryData = new QueryData(queryPath);
 			ArrayList<String> pageList = queryData.getAllpageQueries();
 			ArrayList<String> sectionList = queryData.getAllSectionQueries();
+			System.out.println("Got " + pageList.size() + " pages and " + sectionList.size() + " sections.");
 
 			// 3. Lucene Search
 
 			// Create run file for pages.
 			System.out.println("Search Results for " + pageList.size() + " pages...");
-			ArrayList<String> pageResults = getSearchResult(pageList, Max_Result);
+			ArrayList<String> pageResults = getSearchResult(pageList, Max_Results);
 			String pageRunFileName = "pages-bm25.run";
 			System.out.println("Got " + pageResults.size() + " results for pages. Write results to " + OUTPUT_DIR + "/"
 					+ pageRunFileName);
@@ -66,7 +63,7 @@ public class LuceneQuery {
 
 			// Create run file for sections.
 			System.out.println("Search Results for " + sectionList.size() + " sections...");
-			ArrayList<String> sectionResults = getSearchResult(sectionList, Max_Result);
+			ArrayList<String> sectionResults = getSearchResult(sectionList, Max_Results);
 			String sectionRunFileName = "section-bm25.run";
 			System.out.println("Got " + sectionResults.size() + " results for sections. Write results to " + OUTPUT_DIR
 					+ "/" + sectionRunFileName);
@@ -93,7 +90,7 @@ public class LuceneQuery {
 		QueryParser parser = new QueryParser("content", new StandardAnalyzer());
 
 		for (String queryStr : queriesStr) {
-			Query q = parser.parse(queryStr);
+			Query q = parser.parse(QueryParser.escape(queryStr));
 
 			TopDocs tops = searcher.search(q, max_result);
 			ScoreDoc[] scoreDoc = tops.scoreDocs;
