@@ -37,25 +37,25 @@ public class QueryData {
 	}
 
 	private void cacheAllQueryData(String file_path) throws FileNotFoundException {
-		for (int i = 0; i < num_of_query_files; i++) {
-			String path = file_path + "fold-" + i + "-" + Page_Name;
-			System.out.println("Retrieve queries from " + path);
-			FileInputStream fis = new FileInputStream((new File(path)));
+		// for (int i = 0; i < num_of_query_files; i++) {
+		// String path = file_path + "fold-" + i + "-" + Page_Name;
+		System.out.println("Retrieve queries from " + file_path);
+		FileInputStream fis = new FileInputStream((new File(file_path)));
 
-			for (Data.Page page : DeserializeData.iterableAnnotations(fis)) {
-				pageQueryList.add(page.getPageName());
+		for (Data.Page page : DeserializeData.iterableAnnotations(fis)) {
+			pageQueryList.add(page.getPageName());
 
-				for (List<Data.Section> sectionPath : page.flatSectionPaths()) {
-					String queryStr = page.getPageName();
-					for (Data.Section section : sectionPath) {
-						queryStr += " ";
-						queryStr += section.getHeading();
-					}
-					sectionQueryList.add(queryStr);
+			for (List<Data.Section> sectionPath : page.flatSectionPaths()) {
+				String queryStr = page.getPageName();
+				for (Data.Section section : sectionPath) {
+					queryStr += " ";
+					queryStr += section.getHeading();
 				}
-
+				sectionQueryList.add(queryStr);
 			}
+
 		}
 	}
+	// }
 
 }
