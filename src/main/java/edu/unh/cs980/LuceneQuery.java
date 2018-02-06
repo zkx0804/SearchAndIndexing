@@ -33,11 +33,11 @@ public class LuceneQuery {
 		// 3. Get all queries and retrieve search result
 		// 4. Create run file.
 
-		String queryPath = args[0];
+		// String queryPath = args[0];
 		// String dataPath = args[1];
 
 		// Local testing args
-		// String queryPath = "DataSet/benchmarkY1-train/train.pages.cbor";
+		String queryPath = "DataSet/benchmarkY1-train/train.pages.cbor";
 		String dataPath = "DataSet/paragraphCorpus/dedup.articles-paragraphs.cbor";
 		try {
 
@@ -102,7 +102,8 @@ public class LuceneQuery {
 				float rankScore = score.score;
 				int rank = i + 1;
 
-				String runStr = queryStr + " Q0 " + paraId + " " + rank + " " + rankScore + " BM25";
+				String runStr = "enwiki:" + queryStr.replace(" ", "%20") + " Q0 " + paraId + " " + rank + " "
+						+ rankScore + " BM25";
 				runFileStr.add(runStr);
 			}
 		}
