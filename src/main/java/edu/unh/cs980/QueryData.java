@@ -48,7 +48,7 @@ public class QueryData {
 			for (List<Data.Section> sectionPath : page.flatSectionPaths()) {
 				String queryStr = page.getPageName();
 				for (Data.Section section : sectionPath) {
-					queryStr += " ";
+					queryStr += "/";
 					queryStr += section.getHeading();
 				}
 				sectionQueryList.add(queryStr);
